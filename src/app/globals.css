@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: theme("colors.ink");
+  background: #ffffff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Plain, readable, trustworthy. Not the brokerage's gold/black. */
+.wrap {
+  width: 100%;
+  max-width: theme("maxWidth.content");
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
