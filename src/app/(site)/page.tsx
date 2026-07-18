@@ -1,12 +1,14 @@
 import Link from "next/link";
 import { getSiteSettings } from "@/lib/site-settings";
 import { LeadForm } from "@/components/LeadForm";
+import { StructuredData } from "@/components/StructuredData";
 
 export default async function HomePage() {
   const s = await getSiteSettings();
 
   return (
     <>
+      <StructuredData settings={s} />
       {/* Hero */}
       <section className="border-b border-line bg-wash">
         <div className="wrap grid gap-10 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-20">
