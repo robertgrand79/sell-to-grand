@@ -39,3 +39,28 @@ export async function updateLead(formData: FormData): Promise<void> {
   await supabase.from("leads").update(update).eq("id", id);
   revalidatePath("/admin/leads");
 }
+
+export async function setLeadArchived(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  if (!supabase) return;
+
+  const id = Number(str(formData.get("id")));
+  if (!Number.isFinite(id)) return;
+  const archived = str(formData.get("archived")) === "true";
+
+  await supabase.from("leads").update({ archived }).eq("id", id);
+  revalidatePath("/admin/leads");
+}
+
+export async function deleteLead(formData: FormData): Promise<void> {
+  await requireAdmin();
+  const supabase = createAdminClient();
+  if (!supabase) return;
+
+  const id = Number(str(formData.get("id")));
+  if (!Number.isFinite(id)) return;
+
+  await supabase.from("leads").delete().eq("id", id);
+  revalidatePath("/admin/leads");
+}

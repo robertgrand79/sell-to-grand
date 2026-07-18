@@ -65,6 +65,7 @@ export type Lead = {
   chosen_path: ChosenPath | null;
   status: LeadStatus;
   notes: string | null;
+  archived: boolean;
   // Step 2 enrichment
   edit_token: string | null;
   ownership_length: string | null;

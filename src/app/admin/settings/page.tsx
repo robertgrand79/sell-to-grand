@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { getSiteSettings } from "@/lib/site-settings";
 import type { SiteSettings } from "@/lib/types";
 import { SettingsForm } from "./SettingsForm";
+import { BrandingUploader } from "./BrandingUploader";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,8 @@ export default async function SettingsPage() {
           Changes go live on the site immediately.
         </p>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 space-y-6">
+        <BrandingUploader logo={settings.logo} favicon={settings.favicon} />
         <SettingsForm settings={settings} />
       </div>
     </div>
