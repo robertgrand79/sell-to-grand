@@ -45,6 +45,48 @@ const input =
   "w-full rounded-md border border-line bg-white px-2.5 py-1.5 text-sm text-ink focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
 const lbl = "block text-xs font-medium text-slatey";
 
+function bool(v: boolean | null): string | null {
+  if (v === null) return null;
+  return v ? "Yes" : "No";
+}
+
+// Read-only display of the step-2 answers a seller provided.
+function EnrichmentDetails({ lead }: { lead: Lead }) {
+  const items: [string, string | null][] = [
+    ["Owned for", lead.ownership_length],
+    ["Condition", lead.property_condition],
+    ["Occupancy", lead.occupancy],
+    ["Repairs needed", lead.repairs_needed],
+    ["Listed w/ realtor", bool(lead.listed_with_realtor)],
+    ["Needs fast sale", bool(lead.needs_fast_sale)],
+    ["Close timeline", lead.close_timeline],
+    ["Reason for selling", lead.reason_for_selling],
+    ["Asking price", lead.asking_price !== null ? money(lead.asking_price) : null],
+    ["Fair price (theirs)", lead.fair_price !== null ? money(lead.fair_price) : null],
+    ["Best time to call", lead.best_time_to_call],
+    ["SMS consent", bool(lead.sms_consent)],
+    ["Contact consent", bool(lead.privacy_consent)],
+  ];
+  const filled = items.filter(([, v]) => v);
+  if (filled.length === 0) return null;
+
+  return (
+    <details className="mt-2 rounded-md border border-line bg-wash/60 p-2.5">
+      <summary className="cursor-pointer text-xs font-semibold text-accentdark">
+        Property &amp; situation details ({filled.length})
+      </summary>
+      <dl className="mt-2 grid gap-x-6 gap-y-1 text-sm text-slatey sm:grid-cols-2">
+        {filled.map(([k, v]) => (
+          <div key={k} className="flex justify-between gap-3">
+            <dt className="text-slatey">{k}</dt>
+            <dd className="text-right font-medium text-ink">{v}</dd>
+          </div>
+        ))}
+      </dl>
+    </details>
+  );
+}
+
 export function LeadCard({ lead }: { lead: Lead }) {
   const [cash, setCash] = useState(lead.cash_offer ?? "");
   const [listed, setListed] = useState(lead.listed_estimate ?? "");
@@ -97,6 +139,8 @@ export function LeadCard({ lead }: { lead: Lead }) {
           Condition: {lead.condition_notes}
         </p>
       )}
+
+      <EnrichmentDetails lead={lead} />
 
       <form action={updateLead} className="mt-4 border-t border-line pt-4">
         <input type="hidden" name="id" value={lead.id} />

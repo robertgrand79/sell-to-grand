@@ -45,6 +45,9 @@ export type LeadStatus =
   | "closed"
   | "lost";
 
+export type PropertyCondition = "Excellent" | "Good" | "Fair" | "Poor" | "Terrible";
+export type Occupancy = "owner" | "tenant" | "vacant";
+
 export type Lead = {
   id: number;
   created_at: string;
@@ -62,6 +65,21 @@ export type Lead = {
   chosen_path: ChosenPath | null;
   status: LeadStatus;
   notes: string | null;
+  // Step 2 enrichment
+  edit_token: string | null;
+  ownership_length: string | null;
+  property_condition: PropertyCondition | null;
+  repairs_needed: string | null;
+  occupancy: Occupancy | null;
+  listed_with_realtor: boolean | null;
+  needs_fast_sale: boolean | null;
+  close_timeline: string | null;
+  reason_for_selling: string | null;
+  asking_price: number | null;
+  fair_price: number | null;
+  best_time_to_call: string | null;
+  sms_consent: boolean | null;
+  privacy_consent: boolean | null;
 };
 
 // What the public lead form is allowed to submit.
