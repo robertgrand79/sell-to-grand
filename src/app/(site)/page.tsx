@@ -61,6 +61,30 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Lead form — full width, directly below the hero */}
+      <section id="offer" className="border-b border-line bg-white">
+        <div className="wrap py-14">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
+              Get your two numbers
+            </h2>
+            <p className="mt-3 text-base leading-relaxed text-slatey">
+              Tell us where the house is and we&apos;ll come back with both: the
+              listed estimate and the cash offer. No obligation to take either
+              one.
+            </p>
+            <ul className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slatey">
+              <li>✓ We buy across {s.service_county}, {s.service_region}</li>
+              <li>✓ Any condition</li>
+              <li>✓ You choose the closing date</li>
+            </ul>
+          </div>
+          <div className="mx-auto mt-8 max-w-3xl rounded-xl border border-line bg-white p-6 shadow-sm sm:p-8">
+            <LeadForm settings={s} />
+          </div>
+        </div>
+      </section>
+
       {/* Why we can show both */}
       <section className="wrap py-16">
         <div className="max-w-3xl">
@@ -112,29 +136,6 @@ export default async function HomePage() {
               </p>
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* Lead form */}
-      <section id="offer" className="border-t border-line bg-wash">
-        <div className="wrap grid gap-10 py-16 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="max-w-md">
-            <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-              Get your two numbers
-            </h2>
-            <p className="mt-4 text-base leading-relaxed text-slatey">
-              Fill this out and we&apos;ll come back with both: the listed
-              estimate and the cash offer. No obligation to take either one.
-            </p>
-            <ul className="mt-6 space-y-3 text-sm text-slatey">
-              <li>• We buy across {s.service_county}, {s.service_region}.</li>
-              <li>• Any condition. You don&apos;t fix a thing.</li>
-              <li>• You choose the closing date.</li>
-            </ul>
-          </div>
-          <div className="rounded-xl border border-line bg-white p-6 shadow-sm sm:p-8">
-            <LeadForm settings={s} />
-          </div>
         </div>
       </section>
     </>

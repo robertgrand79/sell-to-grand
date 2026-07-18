@@ -9,6 +9,42 @@ const fieldClass =
   "w-full rounded-md border border-line bg-white px-3 py-2.5 text-ink placeholder:text-slatey/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20";
 const labelClass = "block text-sm font-medium text-ink";
 
+function formatMoney(raw: string): string {
+  const digits = raw.replace(/[^\d]/g, "");
+  if (!digits) return "";
+  return "$" + Number(digits).toLocaleString("en-US");
+}
+
+// Price input that shows a formatted dollar value as you type ($320,000).
+// The server strips the $ and commas back to a number on submit.
+function CurrencyField({
+  id,
+  name,
+  label,
+}: {
+  id: string;
+  name: string;
+  label: string;
+}) {
+  const [val, setVal] = useState("");
+  return (
+    <div className="space-y-1">
+      <label className={labelClass} htmlFor={id}>
+        {label}
+      </label>
+      <input
+        id={id}
+        name={name}
+        inputMode="numeric"
+        value={val}
+        onChange={(e) => setVal(formatMoney(e.target.value))}
+        placeholder="$0"
+        className={fieldClass}
+      />
+    </div>
+  );
+}
+
 function newToken(): string {
   try {
     if (typeof crypto !== "undefined" && crypto.randomUUID) {
@@ -251,18 +287,8 @@ export function LeadForm({ settings }: { settings: SiteSettings }) {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-1">
-              <label className={labelClass} htmlFor="asking_price">
-                Your asking price
-              </label>
-              <input id="asking_price" name="asking_price" inputMode="decimal" placeholder="$" className={fieldClass} />
-            </div>
-            <div className="space-y-1">
-              <label className={labelClass} htmlFor="fair_price">
-                Fair as-is price for both of us?
-              </label>
-              <input id="fair_price" name="fair_price" inputMode="decimal" placeholder="$" className={fieldClass} />
-            </div>
+            <CurrencyField id="asking_price" name="asking_price" label="Your asking price" />
+            <CurrencyField id="fair_price" name="fair_price" label="Fair as-is price for both of us?" />
           </div>
           <p className="text-xs text-slatey">
             If we buy as-is, pay your closing and escrow costs, and close on the
