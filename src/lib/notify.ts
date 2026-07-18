@@ -1,6 +1,13 @@
 // Emails Robert when a new lead comes in. Uses Resend's HTTP API directly
 // (no SDK dependency). It is a no-op until RESEND_API_KEY is set, and it
 // never throws: a notification failure must never break lead capture.
+//
+// Every outcome is recorded to the notify_log table so it can be inspected
+// from the database (Vercel's function console output isn't otherwise
+// visible to us). It also doubles as a permanent "was this lead emailed?"
+// trail.
+
+import { createPublicSupabase } from "@/lib/supabase/public";
 
 type NewLead = {
   name: string;
@@ -8,6 +15,27 @@ type NewLead = {
   email: string | null;
   address: string;
 };
+
+async function record(entry: {
+  status: string;
+  detail?: string | null;
+  recipient?: string | null;
+  from_addr?: string | null;
+  lead_name?: string | null;
+}): Promise<void> {
+  try {
+    const supabase = createPublicSupabase();
+    await supabase.from("notify_log").insert({
+      status: entry.status,
+      detail: entry.detail ?? null,
+      recipient: entry.recipient ?? null,
+      from_addr: entry.from_addr ?? null,
+      lead_name: entry.lead_name ?? null,
+    });
+  } catch {
+    // Diagnostics are best-effort.
+  }
+}
 
 function esc(s: string): string {
   return s
@@ -28,22 +56,18 @@ function row(label: string, value: string | null): string {
 export async function notifyNewLead(lead: NewLead): Promise<void> {
   const key = process.env.RESEND_API_KEY;
   if (!key) {
-    console.warn(
-      "[lead-notify] RESEND_API_KEY is not set in this deployment — no email sent."
-    );
+    await record({ status: "no_key", lead_name: lead.name });
     return;
   }
 
-  const to =
-    process.env.LEAD_NOTIFY_EMAIL || process.env.CONTACT_EMAIL || "";
+  const to = process.env.LEAD_NOTIFY_EMAIL || process.env.CONTACT_EMAIL || "";
   if (!to) {
-    console.warn(
-      "[lead-notify] RESEND_API_KEY is set but LEAD_NOTIFY_EMAIL/CONTACT_EMAIL is empty — no recipient."
-    );
+    await record({ status: "no_recipient", lead_name: lead.name });
     return;
   }
 
-  const from = process.env.LEAD_FROM_EMAIL || "Sell to Grand <onboarding@resend.dev>";
+  const from =
+    process.env.LEAD_FROM_EMAIL || "Sell to Grand <onboarding@resend.dev>";
 
   const html = `
     <div style="font-family:system-ui,sans-serif;max-width:560px">
@@ -76,14 +100,28 @@ export async function notifyNewLead(lead: NewLead): Promise<void> {
 
     if (!res.ok) {
       const body = await res.text().catch(() => "");
-      // Logged (not thrown) so lead capture is never affected. Visible in
-      // Vercel runtime logs to diagnose delivery issues (e.g. an unverified
-      // from-address domain).
-      console.error(`[lead-notify] Resend ${res.status}: ${body}`);
+      await record({
+        status: "error",
+        detail: `${res.status}: ${body}`.slice(0, 800),
+        recipient: to,
+        from_addr: from,
+        lead_name: lead.name,
+      });
     } else {
-      console.log(`[lead-notify] sent to ${to} from ${from}`);
+      await record({
+        status: "sent",
+        recipient: to,
+        from_addr: from,
+        lead_name: lead.name,
+      });
     }
   } catch (err) {
-    console.error("[lead-notify] request to Resend failed:", err);
+    await record({
+      status: "exception",
+      detail: String(err).slice(0, 800),
+      recipient: to,
+      from_addr: from,
+      lead_name: lead.name,
+    });
   }
 }
