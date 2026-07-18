@@ -20,6 +20,10 @@ export function StructuredData({ settings: s }: { settings: SiteSettings }) {
     ...(s.contact_email ? { email: s.contact_email } : {}),
     description:
       "A licensed Oregon brokerage that shows sellers two numbers: what the house nets listed and what they can be paid in cash.",
+    parentOrganization: {
+      "@type": "Organization",
+      name: "Grand Capital LLC",
+    },
     address: {
       "@type": "PostalAddress",
       ...(s.address_street ? { streetAddress: s.address_street } : {}),
