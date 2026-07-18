@@ -5,24 +5,22 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
   return (
     <header className="border-b border-line bg-white">
       <div className="wrap flex items-center justify-between gap-4 py-4">
-        <Link href="/" className="flex flex-col leading-tight">
+        <Link href="/" className="flex flex-col gap-1 leading-tight">
           {settings.logo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={settings.logo}
               alt={settings.business_name}
-              className="h-9 w-auto max-w-[220px] object-contain"
+              className="h-16 w-auto max-w-[380px] object-contain sm:h-20"
             />
           ) : (
-            <>
-              <span className="text-lg font-bold tracking-tight text-ink">
-                {settings.business_name}
-              </span>
-              <span className="text-xs text-slatey">
-                Cash offers in {settings.service_county}, {settings.service_region}
-              </span>
-            </>
+            <span className="text-lg font-bold tracking-tight text-ink">
+              {settings.business_name}
+            </span>
           )}
+          <span className="text-xs text-slatey">
+            Cash offers in {settings.service_county}, {settings.service_region}
+          </span>
         </Link>
         <div className="flex items-center gap-4">
           <Link
