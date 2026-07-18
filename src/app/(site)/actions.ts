@@ -56,10 +56,6 @@ export async function submitLead(formData: FormData): Promise<LeadResult> {
     address,
     phone: phone || null,
     email: email || null,
-    city: clean(formData.get("city")) || null,
-    situation: clean(formData.get("situation")) || null,
-    timeline: clean(formData.get("timeline")) || null,
-    condition_notes: clean(formData.get("condition_notes")) || null,
     ...(editToken ? { edit_token: editToken } : {}),
   };
 
@@ -85,10 +81,6 @@ export async function submitLead(formData: FormData): Promise<LeadResult> {
     phone: phone || null,
     email: email || null,
     address,
-    city: clean(formData.get("city")) || null,
-    situation: clean(formData.get("situation")) || null,
-    timeline: clean(formData.get("timeline")) || null,
-    condition_notes: clean(formData.get("condition_notes")) || null,
   });
 
   return { ok: true };

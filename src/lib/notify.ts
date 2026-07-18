@@ -7,10 +7,6 @@ type NewLead = {
   phone: string | null;
   email: string | null;
   address: string;
-  city: string | null;
-  situation: string | null;
-  timeline: string | null;
-  condition_notes: string | null;
 };
 
 function esc(s: string): string {
@@ -42,18 +38,13 @@ export async function notifyNewLead(lead: NewLead): Promise<void> {
   const html = `
     <div style="font-family:system-ui,sans-serif;max-width:560px">
       <h2 style="color:#1c2430;margin:0 0 4px">New lead: ${esc(lead.name)}</h2>
-      <p style="color:#4a5568;margin:0 0 16px">${esc(lead.address)}${
-        lead.city ? esc(", " + lead.city) : ""
-      }</p>
+      <p style="color:#4a5568;margin:0 0 16px">${esc(lead.address)}</p>
       <table style="border-collapse:collapse;font-size:14px">
         ${row("Phone", lead.phone)}
         ${row("Email", lead.email)}
-        ${row("Timeline", lead.timeline)}
-        ${row("Situation", lead.situation)}
-        ${row("Condition", lead.condition_notes)}
       </table>
       <p style="color:#4a5568;font-size:13px;margin-top:16px">
-        Full details (and any step-2 answers) are in the admin.
+        Any property details they add on step 2 will be in the admin.
       </p>
     </div>`;
 
