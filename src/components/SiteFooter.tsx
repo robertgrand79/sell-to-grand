@@ -53,6 +53,14 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
           <p className="mt-4 text-xs text-slatey">
             © {settings.business_name}. Offers are non-binding until a written
             agreement is signed.{" "}
+            <Link href="/about" className="underline hover:text-ink">
+              About
+            </Link>{" "}
+            ·{" "}
+            <Link href="/faq" className="underline hover:text-ink">
+              Questions
+            </Link>{" "}
+            ·{" "}
             <Link href="/privacy" className="underline hover:text-ink">
               Privacy Policy
             </Link>

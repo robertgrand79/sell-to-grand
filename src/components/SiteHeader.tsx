@@ -24,6 +24,12 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
         </Link>
         <div className="flex items-center gap-4">
           <Link
+            href="/about"
+            className="hidden text-sm font-medium text-slatey hover:text-ink sm:inline"
+          >
+            About
+          </Link>
+          <Link
             href="/faq"
             className="hidden text-sm font-medium text-slatey hover:text-ink sm:inline"
           >
