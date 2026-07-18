@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
     "How Sell to Grand collects, uses, and protects the information you share when you request a cash offer or listed estimate.",
+  alternates: { canonical: "/privacy" },
 };
 
 const LAST_UPDATED = "July 18, 2026";

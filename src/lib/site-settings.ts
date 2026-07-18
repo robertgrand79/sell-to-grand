@@ -1,5 +1,9 @@
-import { createServerSupabase } from "@/lib/supabase/server";
+import { unstable_cache } from "next/cache";
+import { createPublicSupabase } from "@/lib/supabase/public";
 import type { SiteSettings } from "@/lib/types";
+
+// Tag used to invalidate the cached settings when the admin saves changes.
+export const SETTINGS_TAG = "site-settings";
 
 // Fallback used only if Supabase is unreachable at render time.
 // license_disclosure is deliberately NON-EMPTY here: Oregon requires the
@@ -46,24 +50,34 @@ const FALLBACK: SiteSettings = {
   home_seo_description: null,
 };
 
+// Cached so public pages can render statically and serve from the CDN. The
+// admin busts this tag on save, so edits still go live right away.
+const getSettingsCached = unstable_cache(
+  async (): Promise<SiteSettings> => {
+    try {
+      const supabase = createPublicSupabase();
+      const { data, error } = await supabase
+        .from("site_settings")
+        .select("*")
+        .eq("id", 1)
+        .single();
+
+      if (error || !data) return FALLBACK;
+
+      // Guarantee the disclosure is never blank even if the column somehow is.
+      return {
+        ...data,
+        license_disclosure:
+          data.license_disclosure?.trim() || FALLBACK.license_disclosure,
+      } as SiteSettings;
+    } catch {
+      return FALLBACK;
+    }
+  },
+  ["site-settings"],
+  { revalidate: 3600, tags: [SETTINGS_TAG] }
+);
+
 export async function getSiteSettings(): Promise<SiteSettings> {
-  try {
-    const supabase = await createServerSupabase();
-    const { data, error } = await supabase
-      .from("site_settings")
-      .select("*")
-      .eq("id", 1)
-      .single();
-
-    if (error || !data) return FALLBACK;
-
-    // Guarantee the disclosure is never blank even if the column somehow is.
-    return {
-      ...data,
-      license_disclosure:
-        data.license_disclosure?.trim() || FALLBACK.license_disclosure,
-    } as SiteSettings;
-  } catch {
-    return FALLBACK;
-  }
+  return getSettingsCached();
 }

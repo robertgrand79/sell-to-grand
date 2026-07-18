@@ -1,7 +1,13 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { getSiteSettings } from "@/lib/site-settings";
 import { SITE_URL } from "@/lib/site-url";
+
+export const viewport: Viewport = {
+  themeColor: "#1f6f6b",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getSiteSettings();

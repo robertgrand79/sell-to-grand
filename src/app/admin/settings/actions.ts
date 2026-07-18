@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "@/lib/admin-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { SETTINGS_TAG } from "@/lib/site-settings";
 
 export type SettingsState = { ok: boolean; message: string } | null;
 
@@ -69,6 +70,7 @@ export async function updateSettings(
 
   if (error) return { ok: false, message: "Save failed. Try again." };
 
+  revalidateTag(SETTINGS_TAG);
   revalidatePath("/", "layout");
   return { ok: true, message: "Saved." };
 }
