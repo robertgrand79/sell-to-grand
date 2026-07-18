@@ -30,6 +30,9 @@ export default async function AdminLayout({
               <Link href="/admin/leads" className="font-medium text-slatey hover:text-ink">
                 Leads
               </Link>
+              <Link href="/admin/faqs" className="font-medium text-slatey hover:text-ink">
+                FAQs
+              </Link>
               <Link href="/admin/settings" className="font-medium text-slatey hover:text-ink">
                 Settings
               </Link>
