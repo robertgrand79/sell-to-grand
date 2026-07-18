@@ -33,7 +33,11 @@ export default async function SettingsPage() {
         </p>
       </div>
       <div className="mt-6 space-y-6">
-        <BrandingUploader logo={settings.logo} favicon={settings.favicon} />
+        <BrandingUploader
+          logo={settings.logo}
+          favicon={settings.favicon}
+          aboutPhoto={settings.about_photo}
+        />
         <SettingsForm settings={settings} />
       </div>
     </div>

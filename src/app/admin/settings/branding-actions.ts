@@ -40,7 +40,7 @@ export async function uploadBranding(
   if (!supabase) return { ok: false, error: "SUPABASE_SECRET_KEY is not set." };
 
   const kind = formData.get("kind");
-  if (kind !== "logo" && kind !== "favicon") {
+  if (kind !== "logo" && kind !== "favicon" && kind !== "about_photo") {
     return { ok: false, error: "Unknown asset." };
   }
 
@@ -88,7 +88,7 @@ export async function removeBranding(formData: FormData): Promise<void> {
   const supabase = createAdminClient();
   if (!supabase) return;
   const kind = formData.get("kind");
-  if (kind !== "logo" && kind !== "favicon") return;
+  if (kind !== "logo" && kind !== "favicon" && kind !== "about_photo") return;
 
   await supabase.from("site_settings").update({ [kind]: null }).eq("id", 1);
   revalidateTag(SETTINGS_TAG);

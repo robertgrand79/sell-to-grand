@@ -23,7 +23,7 @@ function Asset({
   currentUrl,
   hint,
 }: {
-  kind: "logo" | "favicon";
+  kind: "logo" | "favicon" | "about_photo";
   label: string;
   currentUrl: string | null;
   hint: string;
@@ -81,9 +81,11 @@ function Asset({
 export function BrandingUploader({
   logo,
   favicon,
+  aboutPhoto,
 }: {
   logo: string | null;
   favicon: string | null;
+  aboutPhoto: string | null;
 }) {
   return (
     <section className="rounded-xl border border-line bg-white p-6 shadow-sm">
@@ -102,6 +104,12 @@ export function BrandingUploader({
           label="Favicon"
           currentUrl={favicon}
           hint="The little icon in the browser tab. A square PNG (512×512) is ideal."
+        />
+        <Asset
+          kind="about_photo"
+          label="About photo (Meet Robert)"
+          currentUrl={aboutPhoto}
+          hint="A photo shown on the About page. A clear headshot or a photo of you and Shelly works great."
         />
       </div>
     </section>

@@ -5,6 +5,7 @@ export type SiteSettings = {
   business_name: string;
   logo: string | null;
   favicon: string | null;
+  about_photo: string | null;
   hero_title: string | null;
   hero_subtitle: string | null;
   hero_image: string | null;
