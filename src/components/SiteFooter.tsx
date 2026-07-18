@@ -8,7 +8,10 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
     <footer className="mt-20 border-t border-line bg-wash">
       <div className="wrap grid gap-8 py-12 sm:grid-cols-2">
         <div className="space-y-3">
-          <p className="text-base font-bold text-ink">{settings.business_name}</p>
+          <div>
+            <p className="text-base font-bold text-ink">{settings.business_name}</p>
+            <p className="text-xs text-slatey">A division of Grand Capital LLC</p>
+          </div>
           {(settings.address_street || settings.address_city) && (
             <p className="text-sm text-slatey">
               {settings.address_street}
