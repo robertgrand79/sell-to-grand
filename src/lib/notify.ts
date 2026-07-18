@@ -31,7 +31,12 @@ export async function notifyNewLead(lead: NewLead): Promise<void> {
 
   const to =
     process.env.LEAD_NOTIFY_EMAIL || process.env.CONTACT_EMAIL || "";
-  if (!to) return;
+  if (!to) {
+    console.warn(
+      "[lead-notify] RESEND_API_KEY is set but LEAD_NOTIFY_EMAIL/CONTACT_EMAIL is empty — no recipient."
+    );
+    return;
+  }
 
   const from = process.env.LEAD_FROM_EMAIL || "Sell to Grand <onboarding@resend.dev>";
 
@@ -49,7 +54,7 @@ export async function notifyNewLead(lead: NewLead): Promise<void> {
     </div>`;
 
   try {
-    await fetch("https://api.resend.com/emails", {
+    const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${key}`,
@@ -63,7 +68,17 @@ export async function notifyNewLead(lead: NewLead): Promise<void> {
         ...(lead.email ? { reply_to: lead.email } : {}),
       }),
     });
-  } catch {
-    // Swallow: the lead is already saved; email is best-effort.
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      // Logged (not thrown) so lead capture is never affected. Visible in
+      // Vercel runtime logs to diagnose delivery issues (e.g. an unverified
+      // from-address domain).
+      console.error(`[lead-notify] Resend ${res.status}: ${body}`);
+    } else {
+      console.log(`[lead-notify] sent to ${to} from ${from}`);
+    }
+  } catch (err) {
+    console.error("[lead-notify] request to Resend failed:", err);
   }
 }
