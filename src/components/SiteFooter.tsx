@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
 import { LicenseDisclosure } from "@/components/LicenseDisclosure";
 
@@ -51,7 +52,18 @@ export function SiteFooter({ settings }: { settings: SiteSettings }) {
           <LicenseDisclosure settings={settings} variant="inline" />
           <p className="mt-4 text-xs text-slatey">
             © {settings.business_name}. Offers are non-binding until a written
-            agreement is signed.
+            agreement is signed.{" "}
+            <Link href="/about" className="underline hover:text-ink">
+              About
+            </Link>{" "}
+            ·{" "}
+            <Link href="/faq" className="underline hover:text-ink">
+              Questions
+            </Link>{" "}
+            ·{" "}
+            <Link href="/privacy" className="underline hover:text-ink">
+              Privacy Policy
+            </Link>
           </p>
         </div>
       </div>

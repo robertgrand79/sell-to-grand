@@ -299,13 +299,24 @@ export function LeadForm({ settings }: { settings: SiteSettings }) {
             <label className="flex items-start gap-2 text-sm text-slatey">
               <input type="checkbox" name="sms_consent" className="mt-1 h-4 w-4 rounded border-line text-accent" />
               <span>
-                I agree to receive text messages from {settings.business_name}.
-                Message &amp; data rates may apply.
+                I agree to receive text messages from {settings.business_name}{" "}
+                about my property. Message frequency varies; message &amp; data
+                rates may apply. Reply STOP to opt out. See our{" "}
+                <a href="/privacy" target="_blank" className="font-medium text-accentdark underline">
+                  Privacy Policy
+                </a>
+                .
               </span>
             </label>
             <label className="flex items-start gap-2 text-sm text-slatey">
               <input type="checkbox" name="privacy_consent" className="mt-1 h-4 w-4 rounded border-line text-accent" />
-              <span>I agree to be contacted about my property. No obligation.</span>
+              <span>
+                I agree to be contacted about my property and to the{" "}
+                <a href="/privacy" target="_blank" className="font-medium text-accentdark underline">
+                  Privacy Policy
+                </a>
+                . No obligation.
+              </span>
             </label>
           </div>
 
