@@ -71,7 +71,7 @@ function EnrichmentDetails({ lead }: { lead: Lead }) {
   if (filled.length === 0) return null;
 
   return (
-    <details className="mt-2 rounded-md border border-line bg-wash/60 p-2.5">
+    <details open className="mt-2 rounded-md border border-line bg-wash/60 p-2.5">
       <summary className="cursor-pointer text-xs font-semibold text-accentdark">
         Property &amp; situation details ({filled.length})
       </summary>

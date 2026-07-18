@@ -17,6 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: { canonical: "/" },
     openGraph: { title, description, type: "website", url: SITE_URL, siteName: s.business_name },
     robots: { index: true, follow: true },
+    ...(s.favicon ? { icons: { icon: s.favicon } } : {}),
   };
 }
 
