@@ -1,7 +1,6 @@
 import { getSiteSettings } from "@/lib/site-settings";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
-import { LicenseDisclosure } from "@/components/LicenseDisclosure";
 
 export default async function SiteLayout({
   children,
@@ -12,7 +11,7 @@ export default async function SiteLayout({
   return (
     <>
       <SiteHeader settings={settings} />
-      <LicenseDisclosure settings={settings} variant="band" />
+      {/* Oregon licence disclosure lives in the footer (present on every page). */}
       <main>{children}</main>
       <SiteFooter settings={settings} />
     </>

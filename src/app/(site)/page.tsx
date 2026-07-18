@@ -87,7 +87,7 @@ export default async function HomePage() {
 
       {/* Why we can show both */}
       <section className="wrap py-16">
-        <div className="max-w-3xl">
+        <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-2xl font-bold tracking-tight text-ink sm:text-3xl">
             The gap between the two numbers is what speed costs
           </h2>
