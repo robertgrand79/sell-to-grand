@@ -57,17 +57,36 @@ export default async function AboutPage() {
             <h2 className="text-2xl font-bold tracking-tight text-ink">
               Meet Robert Grand
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-slatey">
-              {s.business_name} is run by Robert Grand, a licensed Oregon
-              Principal Broker
-              {s.license_number ? ` (License #${s.license_number})` : ""}. Before
-              real estate, Robert spent more than two decades in emergency
-              services, and that background shows up in how he works: show up
-              when you say you will, tell people the truth even when it isn&apos;t
-              the easy answer, and treat a stressful situation with respect. He
-              built {s.business_name} for sellers who want a clear, honest
-              option, whether that ends in a fast cash close or a listing.
-            </p>
+            <div className="mt-4 grid gap-6 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start">
+              <div className="space-y-4">
+                <p className="text-base leading-relaxed text-slatey">
+                  {s.business_name} is run by Robert Grand, a licensed Oregon
+                  Principal Broker
+                  {s.license_number ? ` (License #${s.license_number})` : ""}.
+                  Before real estate, Robert spent more than two decades in
+                  emergency services, and that background shows up in how he
+                  works: show up when you say you will, tell people the truth
+                  even when it isn&apos;t the easy answer, and treat a stressful
+                  situation with respect. He built {s.business_name} for sellers
+                  who want a clear, honest option, whether that ends in a fast
+                  cash close or a listing.
+                </p>
+                <p className="text-base leading-relaxed text-slatey">
+                  Robert runs the business alongside his wife and business
+                  partner, Shelly. Together they are a locally rooted, family-run
+                  team, not a national operation, and the people you talk to are
+                  the people who will see your sale through.
+                </p>
+              </div>
+              {s.about_photo && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={s.about_photo}
+                  alt={`Robert Grand, ${s.business_name}`}
+                  className="w-full rounded-xl border border-line object-cover shadow-sm sm:w-56"
+                />
+              )}
+            </div>
           </div>
 
           <div>

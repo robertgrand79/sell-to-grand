@@ -14,6 +14,7 @@ const FALLBACK: SiteSettings = {
   business_name: "Sell to Grand",
   logo: null,
   favicon: null,
+  about_photo: null,
   hero_title: "Two numbers. You pick.",
   hero_subtitle:
     "Most cash buyers show you one number and hope you do not ask what the house is really worth. We are a licensed brokerage, so we can tell you both: what it nets listed, and what we pay you Friday. The gap between them is what speed costs.",
