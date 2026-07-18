@@ -1,32 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { createServerSupabase } from "@/lib/supabase/server";
 import { getSiteSettings } from "@/lib/site-settings";
-import type { Faq } from "@/lib/types";
+import { getPublishedFaqs } from "@/lib/faqs";
 
 export const metadata: Metadata = {
   title: "Questions",
   description:
     "Common questions about selling your Lane County home to Sell to Grand: cash offers, listing, timelines, and how the two numbers work.",
+  alternates: { canonical: "/faq" },
 };
 
-async function getFaqs(): Promise<Faq[]> {
-  try {
-    const supabase = await createServerSupabase();
-    const { data, error } = await supabase
-      .from("faqs")
-      .select("*")
-      .eq("is_published", true)
-      .order("display_order", { ascending: true });
-    if (error || !data) return [];
-    return data as Faq[];
-  } catch {
-    return [];
-  }
-}
-
 export default async function FaqPage() {
-  const [faqs, s] = await Promise.all([getFaqs(), getSiteSettings()]);
+  const [faqs, s] = await Promise.all([getPublishedFaqs(), getSiteSettings()]);
 
   const jsonLd =
     faqs.length > 0

@@ -1,8 +1,9 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "@/lib/admin-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { FAQS_TAG } from "@/lib/faqs";
 
 function str(v: FormDataEntryValue | null): string {
   return typeof v === "string" ? v.trim() : "";
@@ -13,6 +14,7 @@ function int(v: FormDataEntryValue | null, fallback = 0): number {
 }
 
 function revalidate() {
+  revalidateTag(FAQS_TAG);
   revalidatePath("/admin/faqs");
   revalidatePath("/faq");
 }

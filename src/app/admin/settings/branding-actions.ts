@@ -1,9 +1,10 @@
 "use server";
 
 import sharp from "sharp";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdmin } from "@/lib/admin-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { SETTINGS_TAG } from "@/lib/site-settings";
 
 // Logos are often exported on a big canvas of whitespace, which makes them
 // look tiny in the header no matter the CSS size. Trim the surrounding
@@ -76,6 +77,7 @@ export async function uploadBranding(
     return { ok: false, error: "Uploaded, but could not save to settings." };
   }
 
+  revalidateTag(SETTINGS_TAG);
   revalidatePath("/", "layout");
   revalidatePath("/admin/settings");
   return { ok: true, url };
@@ -89,6 +91,7 @@ export async function removeBranding(formData: FormData): Promise<void> {
   if (kind !== "logo" && kind !== "favicon") return;
 
   await supabase.from("site_settings").update({ [kind]: null }).eq("id", 1);
+  revalidateTag(SETTINGS_TAG);
   revalidatePath("/", "layout");
   revalidatePath("/admin/settings");
 }
