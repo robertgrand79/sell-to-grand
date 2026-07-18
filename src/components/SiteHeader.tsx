@@ -11,7 +11,7 @@ export function SiteHeader({ settings }: { settings: SiteSettings }) {
             <img
               src={settings.logo}
               alt={settings.business_name}
-              className="h-14 w-auto max-w-[300px] object-contain sm:h-16"
+              className="h-16 w-auto max-w-[380px] object-contain sm:h-20"
             />
           ) : (
             <span className="text-lg font-bold tracking-tight text-ink">

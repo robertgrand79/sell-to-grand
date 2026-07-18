@@ -1,8 +1,21 @@
 "use server";
 
+import sharp from "sharp";
 import { revalidatePath } from "next/cache";
 import { requireAdmin } from "@/lib/admin-auth";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+// Logos are often exported on a big canvas of whitespace, which makes them
+// look tiny in the header no matter the CSS size. Trim the surrounding
+// uniform border so the mark fills the space. Best-effort: on any failure,
+// keep the original bytes.
+async function trimWhitespace(input: Buffer): Promise<Buffer> {
+  try {
+    return await sharp(input).trim({ threshold: 12 }).toBuffer();
+  } catch {
+    return input;
+  }
+}
 
 export type UploadResult =
   | { ok: true; url: string }
@@ -42,7 +55,10 @@ export async function uploadBranding(
   }
 
   const path = `${kind}-${Date.now()}.${safeExt(file.name)}`;
-  const bytes = new Uint8Array(await file.arrayBuffer());
+  const raw = Buffer.from(await file.arrayBuffer());
+  // Trim whitespace around a logo so it isn't dwarfed by its canvas. Leave
+  // the favicon untouched (it should stay square).
+  const bytes = kind === "logo" ? await trimWhitespace(raw) : raw;
 
   const { error: upErr } = await supabase.storage
     .from("branding")
