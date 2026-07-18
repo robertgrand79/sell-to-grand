@@ -27,7 +27,12 @@ function row(label: string, value: string | null): string {
 
 export async function notifyNewLead(lead: NewLead): Promise<void> {
   const key = process.env.RESEND_API_KEY;
-  if (!key) return; // notifications not configured yet
+  if (!key) {
+    console.warn(
+      "[lead-notify] RESEND_API_KEY is not set in this deployment — no email sent."
+    );
+    return;
+  }
 
   const to =
     process.env.LEAD_NOTIFY_EMAIL || process.env.CONTACT_EMAIL || "";
